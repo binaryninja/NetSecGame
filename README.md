@@ -395,3 +395,116 @@ The code can be adapted to new configurations of games and for new agents. See [
 
 ## About us
 This code was developed at the [Stratosphere Laboratory at the Czech Technical University in Prague](https://www.stratosphereips.org/).
+
+
+-----
+
+Research Review:
+
+#Tags
+[[Research/Research Papers/2308.12086v2.pdf]]
+
+## 1. Paper Information
+- ****Title:**** Out of the Cage: How Stochastic Parrots Win in Cyber Security Environments
+- ****Authors:**** Maria Rigaki, Ondřej Lukáš, Carlos A. Catania, Sebastian Garcia
+- **ArXiv Link:** https://arxiv.org/abs/2308.12086v2
+- **Date of Submission:** August 2023 (v2 submitted on 28 Aug 2023)
+- **Field of Study:** Cybersecurity, Reinforcement Learning, Natural Language Processing
+- **Keywords:** reinforcement learning, security games, large language models, sequential decision-making, cyber security
+- **Code Repository:** https://github.com/stratosphereips/NetSecGame
+
+## 2. Summary
+- **Problem Statement:**  
+  The paper investigates whether pre-trained large language models (LLMs) can be leveraged as autonomous agents to perform sequential decision-making in cybersecurity network environments, potentially matching or outperforming classical reinforcement learning agents that require extensive training.
+- **Main Contributions:**  
+  • Proposing the use of pre-trained LLMs as agents in cybersecurity scenarios without additional training.  
+  • Introducing a novel, modular network security reinforcement learning environment named NetSecGame.  
+  • Demonstrating that LLM agents (especially when using the ReAct framework) can achieve win rates similar to or better than traditional RL agents and even human testers in simulated red-team scenarios.
+- **Key Findings:**  
+  • LLM-based agents—particularly those based on GPT-4 using the ReAct design—can achieve high win rates in both the NetSecGame and CyberBattleSim environments.  
+  • In scenarios without adversarial defenders, the LLM agents achieved 100% win rates with as few as 60 steps, while even in the presence of defenders, they performed competitively against baseline RL agents.  
+  • The gap between performance with GPT-3.5-turbo and GPT-4 was significant, with GPT-4 showing higher stability and better planning capabilities.
+- **Methodology Overview:**  
+  The study evaluates LLM agents using two simulation environments (NetSecGame and CyberBattleSim). The researchers design agent prompts (single-prompt and a two-stage ReAct framework) and compare their performance against standard baselines such as random agents and Q-learning-based agents, with experiments varying in scenario complexity, step limitations, and the presence/absence of defenders.
+- **Conclusion:**  
+  Pre-trained LLMs show promising potential for planning and executing complex cybersecurity attacks in simulated environments. Although they bring advantages like lower training requirements, limitations such as cost, hallucination, and reproducibility issues must be addressed in future work.
+
+## 3. Background & Related Work
+- **Prior Work Referenced:**  
+  The paper builds upon classic reinforcement learning frameworks, transformer architectures, early LLM studies (e.g., GPT-3, Chain-of-Thought prompting), and recent advancements in prompting techniques (ReAct, Reflexion, and DEPS) as well as prior cybersecurity RL environments like CyberBattleSim.
+- **How It Differs from Existing Research:**  
+  Unlike previous approaches that require thousands or millions of training episodes, this paper uses pre-trained LLMs with prompt engineering to directly handle sequential decision-making tasks in network security without further fine-tuning. The introduction of a more realistic simulation environment with dynamic objectives and stochastic defender behavior also distinguishes this work.
+- **Gaps It Addresses:**  
+  The study addresses the challenge of long-term planning in cybersecurity using LLMs, bypassing the need for extensive training data and heavy tuning, and it attempts to bridge the gap between language understanding and effective sequential decision-making in an adversarial setting.
+
+## 4. Methodology
+- **Approach Taken:**  
+  The authors employ pre-trained LLMs as agents that interact with simulation environments by receiving a textual state representation and outputting actions in a specific JSON format. Two prompt-based agent designs are considered: a single-prompt agent and a two-stage ReAct agent.
+- **Key Techniques Used:**  
+  • Prompt engineering including memory components (to avoid repetition and encourage diverse actions).  
+  • The ReAct framework to combine reasoning and actionable responses.  
+  • Comparative simulation experiments in varied cybersecurity scenarios that include different network topologies and the presence of a defender.
+- **Datasets / Benchmarks Used:**  
+  The environments used (NetSecGame and CyberBattleSim) serve as benchmarks, each simulating different aspects of real-world network attacks with configurable topology, action success probabilities, and defender behavior.
+- **Implementation Details:**  
+  NetSecGame is a modular RL environment defined by configuration files detailing network topology, action and state space definitions, rewards, and a stochastic threshold-based defender. The agents are implemented via Python APIs which interact with the environments and process state feedback.
+- **Reproducibility:**  
+  A code repository is provided (https://github.com/stratosphereips/NetSecGame), facilitating experiment reproduction; however, some challenges remain due to reliance on commercial LLMs (e.g., GPT-4) which may introduce reproducibility issues stemming from rate limitations and model updates.
+
+## 5. Experimental Evaluation
+- **Evaluation Metrics:**  
+  Win rates (percentage of episodes solved), average returns (cumulative rewards), detection rates (in scenarios with a defender), and the number of steps per episode.
+- **Results Summary:**  
+  The ReAct agent with GPT-4 achieved 100% win rates in less complex (or no defender) scenarios and maintained competitive performance even with defenders present. In CyberBattleSim’s chain scenario, both DQN and LLM agents solved the environment with optimal or near-optimal steps.
+- **Baseline Comparisons:**  
+  The LLM agents were compared with random agents (with and without a no-repeat heuristic) and reinforcement learning agents like Q-learning and Deep Q-learning Networks (DQN), with LLM agents outperforming several baselines in many scenarios.
+- **Ablation Studies:**  
+  The paper demonstrates differences in performance between single-prompt vs. ReAct prompting strategies and between GPT-3.5-turbo and GPT-4 based implementations.
+- **Limitations Noted by **Authors:****  
+  • Issues with hallucination and action repetition in lower-tier models.  
+  • The high cost of using GPT-4 API compared to GPT-3.5.  
+  • Reproducibility concerns because of model drift and rapid changes in commercial LLMs.  
+  • The agents do not currently learn from episode to episode as they restart each scenario from scratch.
+
+## 6. Strengths
+- **Novelty & Innovation:**  
+  Proposing a new use case for pre-trained LLMs in cybersecurity decision-making and introducing NetSecGame as a realistic simulation environment.
+- **Technical Soundness:**  
+  The experiments are well-structured with thorough comparisons against established RL baselines, and the integration of real-world constraints (like a defender) adds practical relevance.
+- **Clarity & Organization:**  
+  The paper is organized with clear sections on methodology, experimentation, and a detailed description of prompt structures.
+- **Impact & Potential Applications:**  
+  The approach suggests that LLMs can reduce training times in cybersecurity applications and may be a stepping stone towards autonomous penetration testing and proactive cyber defense systems.
+
+## 7. Weaknesses & Critiques
+- **Unaddressed Assumptions / Flaws:**  
+  The agents assume a static or non-learning setup per episode; there is no inter-episode memory or learning, which might limit long-term strategic improvements.
+- **Possible Biases or Limitations:**  
+  Dependence on commercial models like GPT-4 poses cost and reproducibility issues. Additionally, the experimental environments, while realistic, are still simulations and may not capture the full complexity of real-world networks.
+- **Reproducibility Concerns:**  
+  Variability in commercial LLM performance, API rate limitations, and prompt sensitivity can hinder consistent reproduction of results.
+- **Presentation Issues:**  
+  Some aspects such as prompt engineering details and hyperparameter choices could be more explicitly detailed to further support reproducibility.
+
+## 8. Future Work & Open Questions
+- **Suggested Improvements by **Authors:****  
+  Incorporation of learnable components to allow agents to adapt their strategy across episodes and integration of a trainable defender for richer adversarial dynamics.
+- **Potential Extensions / Further Research Directions:**  
+  Fine-tuning open-source LLMs for cybersecurity tasks, developing multi-agent cooperative or adversarial scenarios, and testing in more emulated or real network setups.
+- **Open Problems in the Field:**  
+  Addressing LLM hallucination in sequential decision-making contexts, cost optimization for using high-performing LLMs, and creating robust evaluation metrics for autonomous cyber agents in evolving threat landscapes.
+
+## 9. Personal Review & Rating
+- **Overall Impression:** 4/5  
+- **Significance of Contributions:** 4/5  
+- **Clarity & Organization:** 4/5  
+- **Methodological Rigor:** 4/5  
+- **Reproducibility:** 3/5
+
+## 10. Additional Notes
+- **Key Takeaways:**  
+  The paper successfully demonstrates that pre-trained LLMs, with careful prompt engineering, can perform complex sequential tasks in cybersecurity environments and work competitively with traditional RL agents.
+- **Interesting Insights:**  
+  The employment of the ReAct framework and dynamic memory components in the agent prompts is a promising route to mitigate issues like repetitive actions and sub-optimal navigation in state space.
+- **Personal Thoughts & Comments:**  
+  This work bridges natural language processing and cybersecurity, showing a novel application of LLMs beyond text generation. While there are challenges related to cost and reproducibility, the methodology opens up exciting avenues for autonomous cyber defense and penetration testing tools.
